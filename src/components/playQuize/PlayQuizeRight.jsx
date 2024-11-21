@@ -1,8 +1,20 @@
-function PlayQuizeRight({ question, onNext, isLastQuestion }) {
-  console.log(question);
+/* eslint-disable react/prop-types */
+
+function PlayQuizeRight({
+  question,
+  onNext,
+  isLastQuestion,
+  onSelectOption,
+  selectedOption,
+  isSubmitting,
+}) {
   if (!question) {
     return <p className="text-center text-lg">No question available.</p>;
   }
+
+  const handleOptionChange = (option) => {
+    onSelectOption(question.id, option);
+  };
 
   return (
     <div className="lg:col-span-2 bg-white">
@@ -15,11 +27,16 @@ function PlayQuizeRight({ question, onNext, isLastQuestion }) {
           {question.options.map((option, index) => (
             <label
               key={index}
-              className="flex items-center space-x-3 py-3 px-4 bg-primary/5 rounded-md text-lg"
+              className={`flex items-center space-x-3 py-3 px-4 rounded-md text-lg cursor-pointer ${
+                selectedOption === option ? "bg-primary/10" : "bg-primary/5"
+              }`}
             >
               <input
                 type="radio"
                 name={`question-${question.id}`}
+                value={option}
+                checked={selectedOption === option}
+                onChange={() => handleOptionChange(option)}
                 className="form-radio text-buzzr-purple"
               />
               <span>{option}</span>
@@ -28,9 +45,18 @@ function PlayQuizeRight({ question, onNext, isLastQuestion }) {
         </div>
         <button
           onClick={onNext}
-          className="w-1/2 text-center ml-auto block bg-primary text-white py-2 px-4 rounded-md hover:bg-indigo-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary mb-6 font-semibold my-8"
+          disabled={isSubmitting || !selectedOption}
+          className={`w-1/2 text-center ml-auto block py-2 px-4 rounded-md font-semibold my-8 ${
+            selectedOption
+              ? "bg-primary text-white hover:bg-indigo-800"
+              : "bg-gray-300 text-gray-500 cursor-not-allowed"
+          }`}
         >
-          {isLastQuestion ? "Finish Quiz" : "Next"}
+          {isSubmitting
+            ? "Submitting..."
+            : isLastQuestion
+            ? "Finish Quiz"
+            : "Next"}
         </button>
       </div>
     </div>

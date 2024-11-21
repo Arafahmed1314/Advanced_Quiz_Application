@@ -13,9 +13,12 @@ const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const authString = localStorage.getItem("token");
-    const authData = JSON.parse(authString);
-    setAuth(authData);
-  }, []);
+
+    if (authString) {
+      const authData = JSON.parse(authString);
+      setAuth(authData);
+    }
+  }, []); // Empty dependency array ensures this runs only once.
 
   return (
     <AuthContext.Provider value={{ auth, setAuth: handleAuth }}>
@@ -23,4 +26,5 @@ const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
 export default AuthProvider;

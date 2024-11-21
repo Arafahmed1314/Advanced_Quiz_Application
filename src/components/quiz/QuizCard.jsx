@@ -5,16 +5,17 @@ import { useNavigate } from "react-router-dom";
 function QuizCard({ data }) {
   const navigate = useNavigate();
   const { auth } = useAuth();
+  // console.log(data.id);
 
   const handleNavigate = () => {
     if (auth.user) {
       if (data.is_attempted) {
-        navigate(`/quizResult/${data.id}`); // Navigate to leaderboard for already participated quizzes
+        navigate(`/quizResult/${data.id}`);
       } else {
-        navigate(`/playquiz/${data.id}`); // Navigate to play quiz
+        navigate(`/playquiz/${data.id}`);
       }
     } else {
-      navigate("/login"); // Navigate to login if not authenticated
+      navigate("/login");
     }
   };
 
@@ -33,7 +34,7 @@ function QuizCard({ data }) {
 
       {/* Conditional overlay for already participated */}
       {data.is_attempted && (
-        <div className="absolute transition-all bg-black/80 w-full h-full left-0 top-0 text-white grid place-items-center">
+        <div className="hidden absolute transition-all bg-black/80 w-full h-full left-0 top-0 text-white hover:grid place-items-center">
           <div>
             <h1 className="text-3xl font-bold">Already Participated</h1>
             <p className="text-center">Click to view your leaderboard</p>

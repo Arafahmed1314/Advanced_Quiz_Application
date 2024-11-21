@@ -1,11 +1,27 @@
+import { useEffect, useState } from "react";
 import CreateNewQuiz from "./CreateNewQuiz";
-import DashBoardHeader from "./DashBoardHeader";
+
 import NewQuizList from "./NewQuizList";
+import { useAuth } from "../../context/AuthContext";
+import axios from "axios";
 
 function DashBoard() {
+  const [queizzes, setQuiezes] = useState();
+  const { auth } = useAuth();
+  const { authToken } = auth;
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await axios.get(
+        `http://localhost:5000/api/admin/quizzes`,
+        {
+          headers: { Authorization: `Bearer ${authToken}` },
+        }
+      );
+      console.log("Question updated successfully!", response);
+    };
+    fetchData();
+  }, []);
   return (
-    // <div className="bg-gray-100 min-h-screen flex">
-    //   <DashBoardHeader />
     <main className="flex-grow p-10">
       <header className="mb-8">
         <h2 className="text-2xl font-semibold">Hey There 👋!</h2>

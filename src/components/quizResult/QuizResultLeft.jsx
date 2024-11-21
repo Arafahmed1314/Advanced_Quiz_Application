@@ -1,6 +1,9 @@
 import { useNavigate, useParams } from "react-router-dom";
 import circular from "../../assets/icons/circular-progressbar.png";
-function QuizResultLeft() {
+// import CircularProgressBar from "./CircularProgressBar";
+function QuizResultLeft({ stats }) {
+  console.log(stats);
+
   const { id } = useParams();
   const navigate = useNavigate();
   const handleViewLeaderBoard = () => {
@@ -21,7 +24,9 @@ function QuizResultLeft() {
             <div className="w-1/2">
               <div className="flex gap-6 my-6">
                 <div>
-                  <p className="font-semibold text-2xl my-0">10</p>
+                  <p className="font-semibold text-2xl my-0">
+                    {stats?.total_questions}
+                  </p>
                   <p className="text-gray-300">Questions</p>
                 </div>
 
@@ -49,6 +54,7 @@ function QuizResultLeft() {
                 <p className="text-2xl font-bold">5/10</p>
                 <p>Your Mark</p>
               </div>
+              <div>{/* <CircularProgressBar /> */}</div>
               <div>
                 <img src={circular} className="h-20" />
               </div>

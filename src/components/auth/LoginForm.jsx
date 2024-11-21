@@ -17,9 +17,10 @@ function LoginForm() {
   } = useForm();
   const onSubmit = async (formData) => {
     setLoading(true);
+    console.log(formData);
 
     try {
-      const response = await axios.post(
+      var response = await axios.post(
         `http://localhost:5000/api/auth/login`,
         formData
       );
@@ -32,7 +33,6 @@ function LoginForm() {
             authToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
           });
-          navigate("/");
         }
       }
     } catch (error) {
@@ -42,6 +42,11 @@ function LoginForm() {
       setError("root.random", { type: "random", message: errorMessage });
     } finally {
       setLoading(false);
+      if (formData.isAdmin) {
+        if (response.data.data.user.role === "admin") navigate("/admin");
+      } else {
+        navigate("/");
+      }
     }
   };
   return (
@@ -84,6 +89,7 @@ function LoginForm() {
         <input
           type="checkbox"
           id="admin"
+          {...register("isAdmin")}
           className="px-4 py-3 rounded-lg border border-gray-300"
         />
         <label htmlFor="admin" className="block ">
