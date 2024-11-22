@@ -1,9 +1,9 @@
+/* eslint-disable react/prop-types */
 import { useNavigate, useParams } from "react-router-dom";
-import circular from "../../assets/icons/circular-progressbar.png";
-// import CircularProgressBar from "./CircularProgressBar";
-function QuizResultLeft({ stats }) {
-  console.log(stats);
 
+import CircularProgressBar from "./CircularProgressBar";
+
+function QuizResultLeft({ stats, correct, wrong, percentages }) {
   const { id } = useParams();
   const navigate = useNavigate();
   const handleViewLeaderBoard = () => {
@@ -31,12 +31,12 @@ function QuizResultLeft({ stats }) {
                 </div>
 
                 <div>
-                  <p className="font-semibold text-2xl my-0">8</p>
+                  <p className="font-semibold text-2xl my-0">{correct}</p>
                   <p className="text-gray-300">Correct</p>
                 </div>
 
                 <div>
-                  <p className="font-semibold text-2xl my-0">2</p>
+                  <p className="font-semibold text-2xl my-0">{wrong}</p>
                   <p className="text-gray-300">Wrong</p>
                 </div>
               </div>
@@ -51,13 +51,12 @@ function QuizResultLeft({ stats }) {
 
             <div className="w-1/2 bg-primary/80 rounded-md border border-white/20 flex items-center p-4">
               <div className="flex-1">
-                <p className="text-2xl font-bold">5/10</p>
+                <p className="text-2xl font-bold">
+                  {correct * 5}/{stats?.total_marks}
+                </p>
                 <p>Your Mark</p>
               </div>
-              <div>{/* <CircularProgressBar /> */}</div>
-              <div>
-                <img src={circular} className="h-20" />
-              </div>
+              <div>{<CircularProgressBar percentages={percentages} />}</div>
             </div>
           </div>
         </div>

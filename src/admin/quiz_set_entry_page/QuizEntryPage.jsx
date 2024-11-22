@@ -1,4 +1,5 @@
-import { useLocation } from "react-router-dom";
+import { useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import QuizEntryLeft from "./QuizEntryLeft";
 import QuizEntryNav from "./QuizEntryNav";
 import QuizEntryRight from "./QuizEntryRight";
@@ -7,11 +8,19 @@ import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 
 function QuizEntryPage() {
-  const { questionSet } = useQuestionSetContext();
+  const { questionSet, setQuestionSet } = useQuestionSetContext();
+  const navigate = useNavigate();
   const location = useLocation();
   const { formData, id } = location.state;
   const { auth } = useAuth();
   const { authToken } = auth;
+
+  useEffect(() => {
+    // Cleanup function to reset questionSet when the component unmounts
+    return () => {
+      setQuestionSet([]);
+    };
+  }, [setQuestionSet]);
 
   const handlePublish = async () => {
     const obj = {
@@ -21,12 +30,17 @@ function QuizEntryPage() {
     try {
       const response = await axios.patch(
         `http://localhost:5000/api/admin/quizzes/${id}`,
-        obj, // Direct object
+        obj,
         {
-          headers: { Authorization: `Bearer ${authToken}` }, // Correct token format
+          headers: { Authorization: `Bearer ${authToken}` },
         }
       );
-      console.log("Quiz published successfully!", response.data);
+
+      if (response.status === 200) {
+        setQuestionSet([]);
+        navigate("/admin");
+      }
+      console.log("Quiz published successfully!", response.status);
       alert("Quiz published successfully!");
     } catch (error) {
       console.error("Failed to publish quiz:", error.message);
@@ -40,14 +54,16 @@ function QuizEntryPage() {
       <QuizEntryNav />
 
       {/* Publish Button */}
-      <div className="flex justify-end mb-6">
-        <button
-          onClick={handlePublish}
-          className="bg-primary text-white py-2 px-6 rounded-md font-medium hover:bg-primary/90 focus:outline-none"
-        >
-          Publish Quiz
-        </button>
-      </div>
+      {questionSet.length > 0 && (
+        <div className="flex justify-end mb-6">
+          <button
+            onClick={handlePublish}
+            className="bg-primary text-white py-2 px-6 rounded-md font-medium hover:bg-primary/90 focus:outline-none"
+          >
+            Publish Quiz
+          </button>
+        </div>
+      )}
 
       {/* Quiz Content */}
       <div className="grid grid-cols-1 lg:grid-cols-2 md:gap-8 lg:gap-12">

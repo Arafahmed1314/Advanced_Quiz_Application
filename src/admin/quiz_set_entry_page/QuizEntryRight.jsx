@@ -8,7 +8,7 @@ function QuizEntryRight({ index, question }) {
   const { setUpdateQuiz } = useQuestionSetContext();
   const { authToken } = auth;
   const { setQuestionSet } = useQuestionSetContext();
-  console.log(question.id);
+  // console.log(question.id);
   const handleDelete = async () => {
     try {
       const response = await axios.delete(

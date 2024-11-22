@@ -4,19 +4,22 @@ import AddIcon from "../../svg/AddIcon";
 
 function CreateNewQuiz() {
   return (
-    <Link to="/quiz_set_page" className="group">
-      <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200 ">
-        <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-all">
+    <div className="bg-white p-6 rounded-lg shadow-md border border-gray-300 group cursor-pointer hover:shadow-lg transition-shadow">
+      <Link to="/quiz_set_page" className="group">
+        <div className="text-buzzr-purple mb-4 group-hover:scale-105 transition-transform">
           <AddIcon />
+          {/* <CubeIcon /> */}
         </div>
-        <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-all">
+        <h3 className="font-semibold text-lg mb-2 group-hover:scale-105 transition-transform truncate">
+          {/* {title} */}
           Create a new quiz
         </h3>
-        <p className="text-gray-600 text-sm group-hover:scale-105 transition-all">
+        <p className="text-gray-600 text-sm group-hover:scale-105 transition-transform line-clamp-3">
+          {/* {description} */}
           Build from the ground up
         </p>
-      </div>
-    </Link>
+      </Link>
+    </div>
   );
 }
 

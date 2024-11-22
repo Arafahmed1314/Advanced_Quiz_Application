@@ -3,25 +3,21 @@ import { useEffect, useState } from "react";
 import { AuthContext } from "../context/AuthContext";
 
 const AuthProvider = ({ children }) => {
-  const [auth, setAuth] = useState({});
-
-  const handleAuth = (data) => {
-    setAuth(data);
-    const authData = JSON.stringify(data);
-    localStorage.setItem("token", authData);
-  };
+  const [auth, setAuth] = useState(() => {
+    const authData = JSON.parse(localStorage.getItem("token"));
+    return authData || {};
+  });
 
   useEffect(() => {
-    const authString = localStorage.getItem("token");
-
-    if (authString) {
-      const authData = JSON.parse(authString);
-      setAuth(authData);
+    if (auth && Object.keys(auth).length > 0) {
+      localStorage.setItem("token", JSON.stringify(auth));
+    } else {
+      localStorage.removeItem("token");
     }
-  }, []); // Empty dependency array ensures this runs only once.
+  }, [auth]);
 
   return (
-    <AuthContext.Provider value={{ auth, setAuth: handleAuth }}>
+    <AuthContext.Provider value={{ auth, setAuth }}>
       {children}
     </AuthContext.Provider>
   );

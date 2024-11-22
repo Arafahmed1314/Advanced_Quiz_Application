@@ -7,12 +7,12 @@ function QuizCard({ data }) {
   const { auth } = useAuth();
   // console.log(data.id);
 
-  const handleNavigate = () => {
+  const handleNavigate = (id) => {
     if (auth.user) {
       if (data.is_attempted) {
-        navigate(`/quizResult/${data.id}`);
+        navigate(`/quizResult/${id}`);
       } else {
-        navigate(`/playquiz/${data.id}`);
+        navigate(`/playquiz/${id}`);
       }
     } else {
       navigate("/login");
@@ -21,7 +21,7 @@ function QuizCard({ data }) {
 
   return (
     <div
-      onClick={handleNavigate}
+      onClick={() => handleNavigate(data.id)}
       className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow max-h-[450px] relative group cursor-pointer"
     >
       {/* Overlay Content */}

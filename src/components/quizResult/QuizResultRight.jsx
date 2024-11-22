@@ -1,10 +1,16 @@
-function QuizResultRight({ question, index, submitted_answers }) {
+/* eslint-disable react/prop-types */
+function QuizResultRight({
+  question,
+  index,
+  submittedAnswer,
+  correctAnswer,
+  status,
+}) {
   return (
-    // <div className="max-h-screen md:w-1/2 flex items-center justify-center h-full p-8">
-    //   <div className="h-[calc(100vh-50px)] overflow-y-scroll ">
     <div className="px-4">
-      {/* <!-- Question One --> */}
+      {/* Question Card */}
       <div className="rounded-lg overflow-hidden shadow-sm mb-4">
+        {/* Question Content */}
         <div className="bg-white p-6 !pb-2">
           <div className="flex justify-between items-center mb-4">
             <h3 className="text-lg font-semibold">
@@ -12,40 +18,49 @@ function QuizResultRight({ question, index, submitted_answers }) {
             </h3>
           </div>
           <div className="space-y-2">
-            {question.options.map((option) => (
+            {question.options.map((option, idx) => (
               <label
-                key={option.id}
+                key={idx}
                 className={`flex items-center space-x-3 ${
-                  question.correctAnswer === option
-                    ? "text-green-500" // Correct option
-                    : submitted_answers[index]?.answer === option
-                    ? "text-red-500" // Incorrect option selected by user
-                    : "text-black" // Neutral state for unselected options
+                  correctAnswer === option
+                    ? "text-green-500 font-bold" // Highlight correct answer
+                    : submittedAnswer === option
+                    ? "text-red-500 font-bold" // Highlight incorrect submission
+                    : "text-black"
                 }`}
               >
                 <input
                   type="radio"
-                  // name="answer1"
                   className="form-radio text-buzzr-purple"
-                  checked={submitted_answers[index]?.answer === option}
+                  checked={submittedAnswer === option}
+                  readOnly
                 />
                 <span>{option}</span>
               </label>
             ))}
           </div>
         </div>
-        <div className="flex space-x-4 bg-primary/10 px-6 py-2">
-          <button className="text-red-600 hover:text-red-800 font-medium">
-            Delete
-          </button>
-          <button className="text-primary hover:text-primary/80 font-medium">
-            Edit Question
-          </button>
+
+        {/* Status Section */}
+        <div className="px-6 py-2 flex justify-between items-center bg-primary/10">
+          <p
+            className={`font-medium ${
+              status === "correct"
+                ? "text-green-500"
+                : status === "incorrect"
+                ? "text-red-500"
+                : "text-gray-500"
+            }`}
+          >
+            {status === "not answered"
+              ? "Not Answered"
+              : status === "correct"
+              ? "Correct"
+              : "Incorrect"}
+          </p>
         </div>
       </div>
     </div>
-    //   </div>
-    // </div>
   );
 }
 

@@ -4,7 +4,6 @@ import Header from "./common/Header";
 import Footer from "./Footer";
 import Profile from "./Profile";
 import QuizList from "./quiz/QuizList";
-import QuizResult from "./quizResult/QuizResult";
 
 function Home() {
   const { auth } = useAuth();
@@ -15,6 +14,7 @@ function Home() {
     <div className="bg-[#F5F3FF] min-h-screen">
       <div className="container mx-auto py-3">
         <Header />
+
         {auth.user && <Profile />}
         {/* <QuizResult /> */}
         <QuizList />

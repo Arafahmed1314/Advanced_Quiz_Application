@@ -1,26 +1,35 @@
 import { useEffect, useState } from "react";
 import CreateNewQuiz from "./CreateNewQuiz";
-
 import NewQuizList from "./NewQuizList";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
 
 function DashBoard() {
-  const [queizzes, setQuiezes] = useState();
+  const [quizzes, setQuizzes] = useState([]); // Fixed typo in variable name
   const { auth } = useAuth();
   const { authToken } = auth;
+
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get(
-        `http://localhost:5000/api/admin/quizzes`,
-        {
-          headers: { Authorization: `Bearer ${authToken}` },
-        }
-      );
-      console.log("Question updated successfully!", response);
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/api/admin/quizzes`,
+          {
+            headers: { Authorization: `Bearer ${authToken}` },
+          }
+        );
+        setQuizzes(response.data); // Directly set response data
+        console.log("Fetched quizzes:", response.data);
+      } catch (error) {
+        console.error("Error fetching quizzes:", error);
+      }
     };
     fetchData();
-  }, []);
+  }, [authToken]);
+  const handleDelete = (id) => {
+    const newData = quizzes.filter((quiz) => quiz.id != id);
+    setQuizzes(newData);
+  };
   return (
     <main className="flex-grow p-10">
       <header className="mb-8">
@@ -29,10 +38,18 @@ function DashBoard() {
       </header>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
         <CreateNewQuiz />
-        <NewQuizList />
+        {quizzes?.map((quiz) => (
+          <NewQuizList
+            key={quiz.id}
+            status={quiz.status}
+            title={quiz.title}
+            id={quiz.id}
+            onDelete={handleDelete}
+            description={quiz.description}
+          />
+        ))}
       </div>
     </main>
-    // </div>
   );
 }
 
