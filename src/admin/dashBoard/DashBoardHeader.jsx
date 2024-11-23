@@ -8,7 +8,7 @@ function DashBoardHeader() {
   const { setAuth } = useAuth();
   const navigate = useNavigate();
   return (
-    <aside className="w-64 bg-primary p-6 flex flex-col">
+    <aside className="min-w-[20%] bg-primary p-6 flex flex-col">
       <div className="mb-10">
         <img src={logo} className="h-7" />
       </div>

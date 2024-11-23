@@ -4,6 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+
+import { showLoginCredential } from "../../utils/toast";
 import { toast } from "react-toastify";
 
 function LoginForm() {
@@ -18,7 +20,7 @@ function LoginForm() {
   } = useForm();
   const onSubmit = async (formData) => {
     setLoading(true);
-    console.log(formData);
+    // console.log(formData);
 
     try {
       var response = await axios.post(
@@ -27,20 +29,27 @@ function LoginForm() {
       );
       if (response.status === 200) {
         if (formData.isAdmin) {
-          if (response.data.data.user.role === "admin") navigate("/admin");
-          else {
-            toast.success("You're not admin!", {
+          if (response.data.data.user.role === "admin") {
+            toast.success("🎉 Successfully Login", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+            navigate("/admin");
+          } else {
+            toast.error("Login failed. you're not allowed to login as admin", {
               position: "top-right",
               autoClose: 3000,
             });
           }
         } else {
-          if (response.data.data.user.role === "user") navigate("/");
-          else {
-            toast.error("Login failed. Please check your credentials.", {
+          if (response.data.data.user.role === "user") {
+            toast.success(`🎉 Welcome ${response.data.data.user.full_name}`, {
               position: "top-right",
               autoClose: 3000,
             });
+            navigate("/");
+          } else {
+            showLoginCredential();
           }
         }
         const { tokens, user } = response.data.data;
@@ -54,10 +63,7 @@ function LoginForm() {
         }
       }
     } catch (error) {
-      toast.error("Login failed. Please check your credentials.", {
-        position: "top-right",
-        autoClose: 3000,
-      }); // Log full error object
+      showLoginCredential();
       const errorMessage =
         error.response?.data?.message || "An unexpected error occurred.";
       setError("root.random", { type: "random", message: errorMessage });

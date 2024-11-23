@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 function QuizCard({ data }) {
   const navigate = useNavigate();
   const { auth } = useAuth();
-  // console.log(data.id);
 
   const handleNavigate = (id) => {
     if (auth.user) {
@@ -34,7 +33,7 @@ function QuizCard({ data }) {
 
       {/* Conditional overlay for already participated */}
       {data.is_attempted && (
-        <div className="hidden absolute transition-all bg-black/80 w-full h-full left-0 top-0 text-white hover:grid place-items-center">
+        <div className="absolute transition-all bg-black/80 w-full h-full left-0 top-0 text-white opacity-0 group-hover:opacity-100 grid place-items-center">
           <div>
             <h1 className="text-3xl font-bold">Already Participated</h1>
             <p className="text-center">Click to view your leaderboard</p>

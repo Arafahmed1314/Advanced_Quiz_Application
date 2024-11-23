@@ -24,7 +24,7 @@ function NewQuizList({ title, description, status, id, onDelete }) {
         }
       );
 
-      if (response.status == "success") {
+      if (response.status === 200) {
         showPublishSuccess();
       }
 

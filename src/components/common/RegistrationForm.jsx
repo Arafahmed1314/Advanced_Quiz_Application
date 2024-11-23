@@ -22,26 +22,39 @@ function RegistrationForm() {
     };
 
     try {
-      const response = await axios.post(
+      var response = await axios.post(
         "http://localhost:5000/api/auth/register",
         requestBody
       );
       if (response.status !== "fail") {
-        navigate("/login");
         toast.success("Registration successful!", {
           position: "top-right",
-          autoClose: 3000, // Closes after 3 seconds
+          autoClose: 3000,
         });
+        navigate("/login");
       }
     } catch (error) {
       console.error(
         "Registration failed:",
         error.response?.data || error.message
       );
-      toast.error("Registration failed. Please try again.", {
-        position: "top-right",
-        autoClose: 5000,
-      });
+
+      if (error.response?.status === 409) {
+        // Specific error for duplicate email
+        toast.error(
+          "Email already registered. Please use a different email address.",
+          {
+            position: "top-right",
+            autoClose: 4000,
+          }
+        );
+      } else {
+        // General error handling
+        toast.error("Registration failed. Please try again.", {
+          position: "top-right",
+          autoClose: 4000,
+        });
+      }
     }
   };
 

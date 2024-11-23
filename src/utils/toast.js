@@ -58,3 +58,9 @@ export const showCompleteAllQuestionsSuccess = () => {
         progress: undefined,
     });
 };
+export const showLoginCredential = () => {
+    toast.error("Login failed. Please check your credentials.", {
+        position: "top-right",
+        autoClose: 3000,
+    });
+};

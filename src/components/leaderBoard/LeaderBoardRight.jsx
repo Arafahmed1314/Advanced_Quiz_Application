@@ -14,7 +14,6 @@ function LeaderBoardRight({ result, loading, error }) {
     return <p>Error loading leaderboard: {error.message}</p>;
   }
 
-  // Process and sort attempts by correct answers
   const sortedLeaderboard = result?.attempts
     ?.map((attempt) => {
       const correctCount = attempt?.submitted_answers.reduce(
@@ -33,7 +32,7 @@ function LeaderBoardRight({ result, loading, error }) {
         correctCount, // Number of correct answers
       };
     })
-    .sort((a, b) => b.correctCount - a.correctCount); // Sort in descending order
+    .sort((a, b) => b.correctCount - a.correctCount); // Sort by highest score
 
   return (
     <div>
@@ -47,8 +46,12 @@ function LeaderBoardRight({ result, loading, error }) {
             <li
               key={entry.user.id}
               className={`${
-                user.id === entry.user.id && index < 5 ? "bg-green-400" : ""
-              } flex items-center justify-between bg-white p-4 rounded shadow-sm`}
+                user.id === entry.user.id && index < 5
+                  ? "bg-green-400"
+                  : "bg-white"
+              } flex items-center justify-between p-4 rounded shadow-sm ${
+                user.id === entry.user.id ? "ring-2 ring-blue-500" : ""
+              }`}
             >
               <div className="flex items-center">
                 <img
