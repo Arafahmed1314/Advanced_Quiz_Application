@@ -6,6 +6,7 @@ import { useGetAllQuestion } from "../../hook/useGetAllQuestion";
 import { useAxios } from "../../hook/useAxios";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { showCompleteAllQuestionsSuccess } from "../../utils/toast";
 
 function PlayQuize() {
   const { id } = useParams();
@@ -27,6 +28,7 @@ function PlayQuize() {
     if (currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prevIndex) => prevIndex + 1);
     } else {
+      showCompleteAllQuestionsSuccess();
       handleSubmitQuiz();
       navigate(`/quizResult/${id}`);
     }

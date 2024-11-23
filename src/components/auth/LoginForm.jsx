@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 function LoginForm() {
   const [loading, setLoading] = useState(false);
@@ -25,6 +26,23 @@ function LoginForm() {
         formData
       );
       if (response.status === 200) {
+        if (formData.isAdmin) {
+          if (response.data.data.user.role === "admin") navigate("/admin");
+          else {
+            toast.success("You're not admin!", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+          }
+        } else {
+          if (response.data.data.user.role === "user") navigate("/");
+          else {
+            toast.error("Login failed. Please check your credentials.", {
+              position: "top-right",
+              autoClose: 3000,
+            });
+          }
+        }
         const { tokens, user } = response.data.data;
 
         if (tokens) {
@@ -36,17 +54,15 @@ function LoginForm() {
         }
       }
     } catch (error) {
-      console.error("Error details:", error); // Log full error object
+      toast.error("Login failed. Please check your credentials.", {
+        position: "top-right",
+        autoClose: 3000,
+      }); // Log full error object
       const errorMessage =
         error.response?.data?.message || "An unexpected error occurred.";
       setError("root.random", { type: "random", message: errorMessage });
     } finally {
       setLoading(false);
-      if (formData.isAdmin) {
-        if (response.data.data.user.role === "admin") navigate("/admin");
-      } else {
-        navigate("/");
-      }
     }
   };
   return (

@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import logo from "../../assets/logo.svg";
 import LoginForm from "../auth/LoginForm";
 function LoginRightSide() {
@@ -21,9 +22,9 @@ function LoginRightSide() {
         <div className="mt-8">
           <p className="text-center">
             No Account ?{" "}
-            <a href="#" className="text-primary">
+            <Link to="/register" className="text-primary">
               Sign up
-            </a>
+            </Link>
           </p>
         </div>
       </div>

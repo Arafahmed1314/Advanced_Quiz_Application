@@ -6,6 +6,7 @@ import QuizEntryRight from "./QuizEntryRight";
 import { useQuestionSetContext } from "../../context/QuestionSetContext";
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
+import { showPublishSuccess } from "../../utils/toast";
 
 function QuizEntryPage() {
   const { questionSet, setQuestionSet } = useQuestionSetContext();
@@ -37,11 +38,10 @@ function QuizEntryPage() {
       );
 
       if (response.status === 200) {
+        showPublishSuccess();
         setQuestionSet([]);
         navigate("/admin");
       }
-      console.log("Quiz published successfully!", response.status);
-      alert("Quiz published successfully!");
     } catch (error) {
       console.error("Failed to publish quiz:", error.message);
       alert("Failed to publish quiz. Please try again.");

@@ -3,6 +3,7 @@ import CreateNewQuiz from "./CreateNewQuiz";
 import NewQuizList from "./NewQuizList";
 import { useAuth } from "../../context/AuthContext";
 import axios from "axios";
+import { showDeleteSuccess } from "../../utils/toast";
 
 function DashBoard() {
   const [quizzes, setQuizzes] = useState([]); // Fixed typo in variable name
@@ -28,6 +29,7 @@ function DashBoard() {
   }, [authToken]);
   const handleDelete = (id) => {
     const newData = quizzes.filter((quiz) => quiz.id != id);
+    showDeleteSuccess();
     setQuizzes(newData);
   };
   return (

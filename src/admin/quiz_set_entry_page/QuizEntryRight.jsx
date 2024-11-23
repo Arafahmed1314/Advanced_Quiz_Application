@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useAuth } from "../../context/AuthContext";
 import { useQuestionSetContext } from "../../context/QuestionSetContext";
+import { showDeleteSuccess } from "../../utils/toast";
 
 /* eslint-disable react/prop-types */
 function QuizEntryRight({ index, question }) {
@@ -17,6 +18,9 @@ function QuizEntryRight({ index, question }) {
           headers: { Authorization: `Bearer ${authToken}` },
         }
       );
+      if (response.status == "success") {
+        showDeleteSuccess();
+      }
       setQuestionSet((prevQuestionSet) =>
         prevQuestionSet.filter((q) => q.id !== question.id)
       );

@@ -10,6 +10,7 @@ import QuizEntryPage from "./admin/quiz_set_entry_page/QuizEntryPage";
 import QuizSetPage from "./admin/quiz_set_page/QuizSetPage";
 import AdminRoutes from "./routes/AdminRoutes";
 import UserPrivateRoutes from "./routes/UserPrivateRoutes";
+import Registration from "./components/registration/Registration";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Routes>
         <Route path="/" exact element={<Home />} />
         <Route path="login" element={<LoginPages />} />
+        <Route path="register" element={<Registration />} />
         <Route element={<UserPrivateRoutes />}>
           <Route path="playquiz/:id" element={<PlayQuize />}></Route>
           <Route path="quizResult/:id" element={<QuizResult />} />

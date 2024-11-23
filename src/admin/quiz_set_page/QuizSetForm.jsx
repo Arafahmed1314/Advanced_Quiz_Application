@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import Field from "../../components/common/Field";
 import { api } from "../../api"; // Axios instance
 import { useAuth } from "../../context/AuthContext";
+import { showQuizCreateSuccess } from "../../utils/toast";
 
 function QuizSetForm() {
   const { auth } = useAuth();
@@ -18,16 +19,14 @@ function QuizSetForm() {
     try {
       console.log("Submitting data:", formData);
 
-      // Make the API call with the Authorization header
       var response = await api.post(`/admin/quizzes`, formData, {
         headers: {
           Authorization: `Bearer ${authToken}`, // Set auth header
         },
       });
-
+      showQuizCreateSuccess();
       console.log("Response data:", response.data.data.id);
 
-      // Navigate to the next page with form data
       navigate("/quiz_entry_page", {
         state: {
           formData, // Include form data

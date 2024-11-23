@@ -3,6 +3,7 @@ import axios from "axios";
 import CubeIcon from "../../svg/CubeIcon";
 import { useAuth } from "../../context/AuthContext";
 import { useState } from "react";
+import { showDeleteSuccess, showPublishSuccess } from "../../utils/toast";
 
 function NewQuizList({ title, description, status, id, onDelete }) {
   const [isPublish, setIsPublish] = useState(status !== "published");
@@ -23,8 +24,9 @@ function NewQuizList({ title, description, status, id, onDelete }) {
         }
       );
 
-      console.log("Quiz published successfully!", response.data);
-      alert("Quiz published successfully!");
+      if (response.status == "success") {
+        showPublishSuccess();
+      }
 
       // Update the local state to reflect the published status
       setIsPublish(false);
@@ -42,7 +44,10 @@ function NewQuizList({ title, description, status, id, onDelete }) {
           headers: { Authorization: `Bearer ${authToken}` },
         }
       );
-      console.log("Delete successful", response.data);
+      if (response.status == "success") {
+        showDeleteSuccess();
+      }
+      // console.log("Delete successful", response.data);
       onDelete(id);
     } catch (error) {
       console.error("Failed to delete quiz:", error.message);
